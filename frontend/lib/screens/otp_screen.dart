@@ -21,7 +21,7 @@ class _OtpScreenState extends State<OtpScreen> {
       if (response.statusCode == 200) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Verification Successful! Login kara.")),
+          const SnackBar(content: Text("Verification Successful! Get forward to login")),
         );
         Navigator.pushReplacement(
           context,
@@ -30,7 +30,7 @@ class _OtpScreenState extends State<OtpScreen> {
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Galat OTP kiwa Expire jhala!")),
+          const SnackBar(content: Text("Invalid OTP or Expired!")),
         );
       }
     } catch (e) {
@@ -49,7 +49,7 @@ class _OtpScreenState extends State<OtpScreen> {
       if (!mounted) return;
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Navin OTP pathavla ahe!")),
+          const SnackBar(content: Text("New OTP has been sent!")),
         );
       }
     } catch (e) {
@@ -89,7 +89,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "OTP pathavla ahe: ${widget.email}",
+                      "OTP has been send to: ${widget.email}",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey[600]),
                     ),
@@ -118,7 +118,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           ),
                     TextButton(
                       onPressed: _handleResend,
-                      child: const Text("OTP nahi ala? Resend kara"),
+                      child: const Text("OTP not received? Resend it."),
                     ),
                   ],
                 ),

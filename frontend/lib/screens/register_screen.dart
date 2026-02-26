@@ -19,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _handleRegister() async {
     setState(() => _isLoading = true);
-    
+
     try {
       final response = await ApiService.register(
         _usernameController.text,
@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (response.statusCode == 201) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("OTP pathavla ahe! Swapna purn kara.")),
+          const SnackBar(content: Text("OTP is send to your respected email.")),
         );
         Navigator.push(
           context,
@@ -39,10 +39,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       } else {
-        final error = jsonDecode(response.body)['message'] ?? "Kahi tari chukle!";
+        String errorMessage = "Something is going wrong!";
+        try {
+          final error = jsonDecode(response.body);
+          errorMessage = error['message'] ?? errorMessage;
+        } catch (e) {
+          // Jar response JSON nasel (e.g. plain text kiwa HTML), tar body direct dakhavne
+          errorMessage = response.body.isNotEmpty
+              ? response.body
+              : "Server error: ${response.statusCode}";
+        }
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error)),
+          SnackBar(content: Text(errorMessage)),
         );
       }
     } catch (e) {
@@ -71,7 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             padding: const EdgeInsets.all(24),
             child: Card(
               elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
@@ -79,7 +89,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const Text(
                       "Register",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 24),
                     TextField(
@@ -124,7 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
                         );
                       },
                       child: const Text("Already have an account? Login"),

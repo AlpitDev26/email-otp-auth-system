@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
+import 'forgot_password_screen.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
 
@@ -38,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email kiwa Password chukicha ahe!")),
+          const SnackBar(content: Text("Invalid Email and Password.")),
         );
       }
     } catch (e) {
@@ -82,13 +83,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                       decoration: const InputDecoration(labelText: "Password", prefixIcon: Icon(Icons.lock)),
                     ),
-                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotScreen()));
+                          },
+                          child: const Text("Forgot Password"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
                     _isLoading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: _handleLogin,
-                            style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
-                            child: const Text("Login"),
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlueAccent,minimumSize: const Size(double.infinity, 50)),
+                            child: const Text("Login", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),),
                           ),
                     TextButton(
                       onPressed: () {

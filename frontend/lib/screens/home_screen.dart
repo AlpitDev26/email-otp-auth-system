@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _profileMessage = "Profile load hot ahe...";
+  String _profileMessage = "Profile is loading....";
   bool _isLoading = true;
 
   @override
