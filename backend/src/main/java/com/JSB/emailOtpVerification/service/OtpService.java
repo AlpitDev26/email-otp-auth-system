@@ -66,4 +66,14 @@ public class OtpService {
         }
         return false;
     }
+
+    public String validateOtp(String email, String otp) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validateOtp'");
+    }
+
+    public void deleteOtp(String email) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteOtp'");
+    }
 }

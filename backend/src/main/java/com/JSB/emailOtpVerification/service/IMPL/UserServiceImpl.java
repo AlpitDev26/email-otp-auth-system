@@ -112,4 +112,42 @@ public class UserServiceImpl implements UserService {
         return "New OTP is sent to your email";
     }
 
+        @Override
+    public String initiateForgotPassword(String email) {
+        Users user = usersRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("Email is not registered.");
+        }
+        
+        // OTP generate karun mail pathvne (je apan adhihi register sathi vapartoय)
+        otpService.generateandSaveOtp(email);
+        
+        return "Password reset OTP is sent to your email.";
+    }
+
+    @Override
+    public String resetPassword(String email, String otp, String newPassword) {
+        // 1. OTP verify karne
+        String otpStatus = otpService.validateOtp(email, otp);
+        
+        if ("OTP is Valid".equals(otpStatus)) {
+            Users user = usersRepository.findByEmail(email);
+            if (user == null) {
+                throw new RuntimeException("User not found.");
+            }
+            
+            // 2. Navin password encode karun save karne
+            user.setPassword(passwordEncoder.encode(newPassword));
+            usersRepository.save(user);
+            
+            // 3. OTP vaprun jhalyamule delete karne
+            otpService.deleteOtp(email);
+            
+            return "Password is changed successfully.";
+        }
+        
+        return "Invalid OTP or OTP Expired!";
+    }
+
+
 }

@@ -60,4 +60,22 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
+        // 1. Forgot Password - OTP Pathavnyasathi
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        String result = userService.initiateForgotPassword(email);
+        return ResponseEntity.ok(result);
+    }
+
+    // 2. Reset Password - OTP Verify karun Navin Password set karnyasathi
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @RequestParam String email,
+            @RequestParam String otp,
+            @RequestParam String newPassword) {
+        String result = userService.resetPassword(email, otp, newPassword);
+        return ResponseEntity.ok(result);
+    }
+
+
 }

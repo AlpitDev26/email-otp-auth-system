@@ -13,6 +13,8 @@ public interface UserService {
     RegisterResponse register(RegisterRequest registerRequest);
     String verifyOtp(String email, String otp);
     String resendOtp(String email);
+    String initiateForgotPassword(String mail);    // sending the mail after OTP generation
+    String resetPassword(String email, String otp, String newPassword);
 
 
     LoginResponse login(LoginRequest loginRequest);
