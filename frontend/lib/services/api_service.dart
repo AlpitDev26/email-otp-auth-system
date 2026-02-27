@@ -3,9 +3,12 @@ import 'package:http/http.dart' as http;
 import '../utils/api_constants.dart';
 
 class ApiService {
-  
   // 1. Register
-  static Future<http.Response> register(String username, String email, String password) async {
+  static Future<http.Response> register(
+    String username,
+    String email,
+    String password,
+  ) async {
     final response = await http.post(
       Uri.parse(ApiConstants.register),
       headers: {"Content-Type": "application/json"},
@@ -23,10 +26,7 @@ class ApiService {
     final response = await http.post(
       Uri.parse(ApiConstants.verifyOtp),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "email": email,
-        "otp": otp,
-      }),
+      body: jsonEncode({"email": email, "otp": otp}),
     );
     return response;
   }
@@ -45,10 +45,7 @@ class ApiService {
     final response = await http.post(
       Uri.parse(ApiConstants.login),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-      }),
+      body: jsonEncode({"email": email, "password": password}),
     );
     return response;
   }
@@ -61,6 +58,28 @@ class ApiService {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
+    );
+    return response;
+  }
+
+  // 6. Forgot Password
+  static Future<http.Response> forgotPassword(String email) async {
+    final response = await http.post(
+      Uri.parse("${ApiConstants.forgotPassword}?email=$email"),
+    );
+    return response;
+  }
+
+  // 7. Reset Password
+  static Future<http.Response> resetPassword(
+    String email,
+    String otp,
+    String newPassword,
+  ) async {
+    final response = await http.post(
+      Uri.parse(
+        "${ApiConstants.resetPassword}?email=$email&otp=$otp&newPassword=$newPassword",
+      ),
     );
     return response;
   }

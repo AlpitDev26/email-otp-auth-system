@@ -11,6 +11,8 @@ import com.JSB.emailOtpVerification.service.OtpService;
 import com.JSB.emailOtpVerification.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.regex.Pattern;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) {
+
+        // Using Regex for Password Validation
+        String passwordPattern =  "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        
+        if (!Pattern.matches(passwordPattern, registerRequest.getPassword())) {
+            throw new RuntimeException("Password must contain at least one digit, one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long.");
+        }
         Users isUserExisting = usersRepository.findByEmail(registerRequest.getEmail());
         if (isUserExisting != null && isUserExisting.isVerified()) {
             throw new RuntimeException("User Already Registered...");
@@ -112,7 +121,7 @@ public class UserServiceImpl implements UserService {
         return "New OTP is sent to your email";
     }
 
-        @Override
+    @Override
     public String initiateForgotPassword(String email) {
         Users user = usersRepository.findByEmail(email);
         if (user == null) {
@@ -129,6 +138,14 @@ public class UserServiceImpl implements UserService {
     public String resetPassword(String email, String otp, String newPassword) {
         // 1. OTP verify karne
         String otpStatus = otpService.validateOtp(email, otp);
+
+        // Using Regex for Password Validation
+        String passwordPattern =  "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        
+        if (!Pattern.matches(passwordPattern, newPassword)) {
+            throw new RuntimeException("Password must contain at least one digit, one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long.");
+        }
+
         
         if ("OTP is Valid".equals(otpStatus)) {
             Users user = usersRepository.findByEmail(email);

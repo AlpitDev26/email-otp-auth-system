@@ -53,13 +53,13 @@ public class OtpService {
 
         Optional<OtpToken> otpTokenOpt = otpTokenRepository.findByEmail(email);
 
-        if(otpTokenOpt.isPresent()){
+        if (otpTokenOpt.isPresent()) {
             OtpToken otpToken = otpTokenOpt.get();
 
-            // otp check karaych ki correct ahe ki nahi kivha expire halay ki nahi 
-            if(otpToken.getOtp().equals(otp) && otpToken.getExpiresAt().isAfter(LocalDateTime.now())){
+            // otp check karaych ki correct ahe ki nahi kivha expire halay ki nahi
+            if (otpToken.getOtp().equals(otp) && otpToken.getExpiresAt().isAfter(LocalDateTime.now())) {
 
-                // otp delete zhalyavr token delete karne 
+                // otp delete zhalyavr token delete karne
                 otpTokenRepository.deleteByEmail(email);
                 return true;
             }
@@ -68,12 +68,25 @@ public class OtpService {
     }
 
     public String validateOtp(String email, String otp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateOtp'");
+        Optional<OtpToken> otpTokenOpt = otpTokenRepository.findByEmail(email);
+
+        if (otpTokenOpt.isPresent()) {
+            OtpToken otpToken = otpTokenOpt.get();
+
+            if (otpToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+                return "OTP is Expired";
+            }
+
+            if (!otpToken.getOtp().equals(otp)) {
+                return "Invalid OTP";
+            }
+
+            return "OTP is Valid";
+        }
+        return "OTP not found for this email";
     }
 
     public void deleteOtp(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteOtp'");
+        otpTokenRepository.deleteByEmail(email);
     }
 }
