@@ -3,8 +3,8 @@ spring.application.name=emailOtpVerification
 
 # Database Configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/email_otp_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=Alpit@MYSQL2006
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # JPA / Hibernate Configuration
@@ -12,14 +12,10 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 
-# Map to store OTPs temporarily (If needed to be persistent, we can create an OTP entity)
-# spring.h2.console.enabled=true
-
-
 # Email Configuration (Gmail)
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=alpit.itjobs@gmail.com
-spring.mail.password=rcxtmuhuabjayorr
+spring.mail.username=YOUR_GMAIL_ADDRESS
+spring.mail.password=YOUR_GMAIL_APP_PASSWORD
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
